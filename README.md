@@ -7,6 +7,10 @@ This is a REST api server for a movie ticketing system. Developed with FastAPI a
 
 Most endpoints are locked behind JWT authentication. An admin user is seeded that can edit reservations, request for a summary report of the revenue/ booked tickets and much more. A regular user can access movies available, seats available for a showtime etc.
 
+#### Get started:
+```
+docker compose up --build 
+```
 
 # API Documentation
 
