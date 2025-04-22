@@ -1,0 +1,36 @@
+services:
+  backend:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app/app
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - SECRET_KEY=${SECRET_KEY}
+      - ALGORITHM=${ALGORITHM}
+      - TOKEN_EXPIRE_MIN=${TOKEN_EXPIRE_MIN}
+      - DB_HOST=${DB_HOST}    
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASS}
+      POSTGRES_DB: movie_ticket
+    ports:
+      - "5432:5432"
+    volumes:
+      - movie_ticket:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${PG_USER} -d movie_ticket"]
+      interval: 2s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  movie_ticket:
+
